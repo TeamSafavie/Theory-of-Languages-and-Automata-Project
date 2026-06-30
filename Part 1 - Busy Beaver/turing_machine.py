@@ -30,12 +30,9 @@
 
     >>> one_hash.rejects('##')
     True
-
 """
 
 import logging
-from itertools import islice
-
 
 class TuringMachine:
     """Turing machine simulator class.
@@ -57,10 +54,13 @@ class TuringMachine:
 
     """
 
-    def __init__(self, transitions, start_state='q0', accept_state='qa', reject_state='qr', blank_symbol=''):
-        # TODO: Implement the constructor. Initialize transitions, start_state, accept_state,
-        # reject_state, blank_symbol, and any other helpful structures.
-        pass
+    def __init__(self, transitions, start_state='q0', accept_state='qa', reject_state='qr', blank_symbol='', finite=False):
+        self.transitions = transitions
+        self.start_state = start_state
+        self.accept_state = accept_state
+        self.reject_state = reject_state
+        self.blank_symbol = blank_symbol
+        self.finite = finite
 
     def run(self, input_):
         """Execute the Turing machine for a particular input.
@@ -80,13 +80,62 @@ class TuringMachine:
         - 'right_hand_side': list of symbols on the right hand side of the current position.
 
         """
-        # TODO: Implement the simulator loop as a Python generator.
-        # 1. Initialize the tape using two lists (left_hand_side and right_hand_side) and the current symbol.
-        # 2. Yield the current step (action, configuration).
-        # 3. Read transitions and update state, write symbols, and move the head ('L' or 'R').
-        # 4. Handle tape expansion dynamically for both left and right directions (double-sided infinite tape).
-        # 5. Log a warning using logging.warning() if the singly-infinite tape boundary is crossed before Part III.
-        pass
+        if isinstance(input_, str):
+            tape = list(input_) if input_ else [self.blank_symbol]
+        else:
+            tape = list(input_) if input_ else [self.blank_symbol]
+            
+        head_pos = 0
+        state = self.start_state
+        
+        while True:
+
+            if not tape:
+                tape = [self.blank_symbol]
+                head_pos = 0
+                
+            lhs = tape[:head_pos]
+            symbol = tape[head_pos]
+            rhs = tape[head_pos+1:]
+            
+            config = {
+                'state': state,
+                'left_hand_side': lhs,
+                'symbol': symbol,
+                'right_hand_side': rhs
+            }
+            
+            action = None
+            if state == self.accept_state:
+                action = 'Accept'
+            elif state == self.reject_state:
+                action = 'Reject'
+                
+            yield (action, config)
+            
+            if action is not None:
+                break
+                
+            if (state, symbol) in self.transitions:
+                next_state, write_symbol, direction = self.transitions[(state, symbol)]
+            else:
+                yield ('Reject', config)
+                break
+                
+            tape[head_pos] = write_symbol
+            state = next_state
+            
+            if direction == 'R':
+                head_pos += 1
+                if head_pos >= len(tape):
+                    tape.append(self.blank_symbol)
+            elif direction == 'L':
+                head_pos -= 1
+                if head_pos < 0:
+                    if self.finite:
+                        logging.warning("Crossed left boundary on finite/singly-infinite tape.")
+                    tape.insert(0, self.blank_symbol)
+                    head_pos = 0
 
     def accepts(self, input_, step_limit=100):
         """Check whether the Turing machine accepts a string.
@@ -96,9 +145,17 @@ class TuringMachine:
         :return: True if the machine halts in accept_state, False if it rejects,
                  or None if the step limit is reached without halting.
         """
-        # TODO: Run the generator up to step_limit and check the action of the final yielded state.
-        # Remember to log a warning if the step_limit is reached without halting.
-        pass
+        gen = self.run(input_)
+        for i, (action, config) in enumerate(gen):
+            if action == 'Accept':
+                return True
+            elif action == 'Reject':
+                return False
+            
+            if i >= step_limit:
+                logging.warning(f"Step limit {step_limit} reached without halting.")
+                return None
+        return None
 
     def rejects(self, input_, **kwargs):
         """Check whether the Turing machine rejects a string.
@@ -106,16 +163,33 @@ class TuringMachine:
         :param input_: the input string or list.
         :return: True if the machine rejects the string, False if it accepts.
         """
-        # TODO: Determine rejection by checking if accepts() returns False.
-        pass
+        res = self.accepts(input_, **kwargs)
+        if res is None:
+            return None
+        return not res
 
-    def debug(self, input_, step_limit=100, colored=False):
+    def debug(self, input_, step_limit=100, colored=True):
         """Print the execution configuration of the machine per transition for debugging.
 
         :param input_: the input string or list.
         :param step_limit: the maximum number of steps to output.
         :param colored: True to output colored boundaries in terminal.
         """
-        # TODO: Loop over the steps yielded by run() up to step_limit and print the tape configuration.
-        # E.g., print the state and the tape with the head highlighted in brackets like: left[symbol]right
-        pass
+        gen = self.run(input_)
+        for i, (action, config) in enumerate(gen):
+            lhs = "".join(config['left_hand_side'])
+            sym = config['symbol']
+            rhs = "".join(config['right_hand_side'])
+            state = config['state']
+            
+            if colored:
+                print(f"{state:15} {lhs}\033[91m[{sym}]\033[0m{rhs}")
+            else:
+                print(f"{state:15} {lhs}[{sym}]{rhs}")
+                
+            if action is not None:
+                break
+                
+            if i >= step_limit:
+                print(f"Step limit {step_limit} reached.")
+                break
