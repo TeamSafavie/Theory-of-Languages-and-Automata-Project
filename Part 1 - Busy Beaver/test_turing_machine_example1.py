@@ -1,17 +1,10 @@
 from turing_machine import TuringMachine
 
-
 transitions = {
         ('q0', '#'): ('saw_#', '#', 'R'),
         ('saw_#', '#'): ('saw_##', '#', 'R'),
         ('saw_##', ''): ('qa', '', 'R'),
 }
-# This turing machine accepts only the ## string. It rejects on any other input
-# computation:
-#   - run ('q0', '#'), it mean the string must start with #, otherwise reject
-#   - if satisfy it move to 'saw_#' state and read next char if it's #, go 'saw_##', otherwise reject
-#   - if satisfy it read next char if it's '' then accept
-#   - ('saw_##', ''), it mean after saw_## it end, so string must be "##"
 
 def print_states(transition_mapping):
     states = set()
