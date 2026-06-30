@@ -137,7 +137,7 @@ class TuringMachine:
                     tape.insert(0, self.blank_symbol)
                     head_pos = 0
 
-    def accepts(self, input_, step_limit=100):
+    def accepts(self, input_, step_limit=2500): #برای اینکه تعداد استپ 100 کم بود و وارنینگ میخوردیم اومدم گذاشتم روی 2500
         """Check whether the Turing machine accepts a string.
 
         :param input_: the input string or list.
@@ -168,7 +168,7 @@ class TuringMachine:
             return None
         return not res
 
-    def debug(self, input_, step_limit=100, colored=True):
+    def debug(self, input_, step_limit=2500, colored=True):
         """Print the execution configuration of the machine per transition for debugging.
 
         :param input_: the input string or list.
