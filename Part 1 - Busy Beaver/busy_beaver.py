@@ -126,7 +126,19 @@ beaver_programs = [
         'e1': ('a', '0', 'l'),
     },
     {
-        # the best 6 state turing machine that always halts and produces the most number of ones is still to be found!
+        # Heiner Marxen's 1999 six-stat, which produces 95,524,079 '1's on the tape in 8,690,333,381,690,951 steps. 
+        'a0': ('b', '1', 'r'),
+        'a1': ('a', '1', 'r'),
+        'b0': ('c', '1', 'l'),
+        'b1': ('b', '1', 'l'),
+        'c0': ('f', '0', 'r'),
+        'c1': ('d', '1', 'l'),
+        'd0': ('a', '1', 'r'),
+        'd1': ('e', '0', 'l'),
+        'e0': ('h', '1', 'l'),
+        'e1': ('f', '1', 'l'),
+        'f0': ('a', '0', 'l'),
+        'f1': ('c', '0', 'l'),
     }
 ]
 
