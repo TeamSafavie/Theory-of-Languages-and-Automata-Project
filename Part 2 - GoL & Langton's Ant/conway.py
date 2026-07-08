@@ -20,9 +20,6 @@ def parse_pattern(filepath):
     Returns:
         tuple: (width, height, list of (r, c) offsets of live cells)
     """
-    # Student TODO: Implement parser here
-    pass
-
 
 class GameOfLife:
     """
@@ -64,8 +61,15 @@ class GameOfLife:
         Returns:
             np.ndarray: The next 2D grid of states.
         """
-        # Student TODO: Implement fast 2D convolution method
-        pass
+        conv = signal.convolve2d(grid, self.neighborhood, mode='same', boundary="boundary_mode", fillvalue=0)
+        
+        next_grid = np.zeros_like(grid)
+        
+        # Survival Rule: Live cell with 2 or 3 live neighbors lives on
+        next_grid[(grid == self.aliveValue) & ((conv == 2) | (conv == 3))] = self.aliveValue
+        
+        # Reproduction Rule: Dead cell with exactly 3 live neighbors becomes live
+        next_grid[(grid == self.deadValue) & (conv == 3)] = self.aliveValue
 
     def evolve(self):
         """
@@ -78,14 +82,33 @@ class GameOfLife:
         if self.fastMode:
             self.grid = self.update_grid_fast(self.grid)
         else:
-            # TODO: [Part 1a - Core Rules]
-            # Remove the transition logic and implement the 4 standard GoL rules
-            # (Underpopulation, Survival, Overpopulation, Reproduction) by iterating 
-            # through the cells cell-by-cell. Handle self.finite wrapping appropriately.
-            
-            # Student TODO: Implement slow update cell-by-cell logic here
-            pass
+            next_grid = np.zeros_like(self.grid)
+            for r in range(self.rows):
+                for c in range(self.cols):
+                    neighbors = 0
+                    for dr in [-1, 0, 1]:
+                        for dc in [-1, 0, 1]:
+                            if dr == 0 and dc == 0: 
+                                continue
+                            nr, nc = r + dr, c + dc
 
+                            if not self.finite:
+                                nr %= self.rows
+                                nc %= self.cols
+                            elif not (0 <= nr < self.rows and 0 <= nc < self.cols):
+                                continue
+                                
+                            if self.grid[nr, nc] == self.aliveValue:
+                                neighbors += 1
+        
+                    if self.grid[r, c] == self.aliveValue:
+                        if neighbors == 2 or neighbors == 3:
+                            next_grid[r, c] = self.aliveValue
+                    else:
+                        if neighbors == 3:
+                            next_grid[r, c] = self.aliveValue
+                            
+            self.grid = next_grid
     def insertBlinker(self, index=(0, 0)):
         '''
         Insert a blinker oscillator construct at the index position
