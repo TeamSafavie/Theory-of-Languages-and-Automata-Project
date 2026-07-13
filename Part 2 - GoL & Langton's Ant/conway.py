@@ -9,17 +9,61 @@ from scipy import signal, ndimage
 
 
 def parse_pattern(filepath):
-    """
-    TODO: [Part 1d - RLE/Plaintext Parser]
-    Write a parser for Run Length Encoded (RLE) or Plaintext (.cells) patterns
-    so grids larger than 20x20 can be loaded.
+    live_cells = []
+    width = 0
+    height = 0
     
-    Args:
-        filepath (str): Path to the pattern file.
+    with open(filepath, 'r') as f:
+        lines = [line.rstrip('\n') for line in f]
         
-    Returns:
-        tuple: (width, height, list of (r, c) offsets of live cells)
-    """
+    is_rle = any(line.startswith('x') and '=' in line for line in lines[:20])
+    
+    if is_rle:
+        r, c = 0, 0
+        rle_data = ""
+        for line in lines:
+            if line.startswith('#'):
+                continue
+            if line.startswith('x'): 
+                parts = line.split(',')
+                width = int(parts[0].split('=')[1].strip())
+                height = int(parts[1].split('=')[1].strip())
+                continue
+            rle_data += line.strip() 
+
+        count_str = ""
+        for char in rle_data:
+            if char == '!':
+                break
+            if char == '$':
+                r += int(count_str) if count_str else 1
+                c = 0
+                count_str = ""
+            elif char.isdigit():
+                count_str += char
+            else:
+                count = int(count_str) if count_str else 1
+                if char in ('o', 'O'):
+                    for _ in range(count):
+                        live_cells.append((r, c))
+                        c += 1
+                elif char in ('b', '.', 'B'):
+                    c += count
+                count_str = ""
+    else:
+        r = 0
+        max_c = 0
+        for line in lines:
+            if line.startswith('!'):
+                continue
+            for c, char in enumerate(line):
+                if char in ('O', 'o', '*'):
+                    live_cells.append((r, c))
+            max_c = max(max_c, len(line))
+            r += 1
+        width, height = max_c, r
+        
+    return width, height, live_cells
 
 class GameOfLife:
     """
@@ -28,14 +72,14 @@ class GameOfLife:
 
     def __init__(self, N=256, finite=False, fastMode=True):
         self.grid = np.zeros((N, N), np.uint)
-        self.neighborhood = np.ones((3, 3), np.uint)  # 8 connected kernel
-        self.neighborhood[1, 1] = 0  # do not count centre pixel
+        self.neighborhood = np.ones((3, 3), np.uint)  
+        self.neighborhood[1, 1] = 0  
         self.finite = finite
         self.fastMode = fastMode
         self.aliveValue = 1
         self.deadValue = 0
-        self.rows = N  # use for slow implementation of evolve
-        self.cols = N  # use for slow implementation of evolve
+        self.rows = N 
+        self.cols = N 
 
     def getStates(self):
         """
@@ -61,15 +105,26 @@ class GameOfLife:
         Returns:
             np.ndarray: The next 2D grid of states.
         """
-        conv = signal.convolve2d(grid, self.neighborhood, mode='same', boundary="boundary_mode", fillvalue=0)
-        
+        conv = signal.convolve2d(
+            grid,
+            self.neighborhood,
+            mode='same',
+            boundary='wrap'
+        )
+
         next_grid = np.zeros_like(grid)
-        
-        # Survival Rule: Live cell with 2 or 3 live neighbors lives on
-        next_grid[(grid == self.aliveValue) & ((conv == 2) | (conv == 3))] = self.aliveValue
-        
-        # Reproduction Rule: Dead cell with exactly 3 live neighbors becomes live
-        next_grid[(grid == self.deadValue) & (conv == 3)] = self.aliveValue
+
+        next_grid[
+            (grid == self.aliveValue) &
+            ((conv == 2) | (conv == 3))
+        ] = self.aliveValue
+
+        next_grid[
+            (grid == self.deadValue) &
+            (conv == 3)
+        ] = self.aliveValue
+
+        return next_grid
 
     def evolve(self):
         """
