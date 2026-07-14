@@ -1,17 +1,16 @@
-### Theory of Languages and Automata Project
+# Theory of Languages and Automata Project
 
 This repository contains the practical assignments for the Theory of Languages
 and Automata course. The project explores fundamental concepts of computation,
 decidability, and emergence through mathematical models and simulations.
 
-# The project is divided into two main parts:
+### The project is divided into two main parts:
 
 1.  Turing Machines & The Busy Beaver Problem
 2.  Cellular Automata (Conway's Game of Life & Langton's Ant)
 
-📁 Project Structure
 
-# Theory of Languages and Automata Project
+### Theory of Languages and Automata Project
 
 This repository contains the practical assignments for the **Theory of Languages and Automata** course. The project explores fundamental concepts of computation, decidability, and emergence through mathematical models and simulations.
 
@@ -72,7 +71,7 @@ Theory-of-Languages-and-Automata-Project/
 
 🚀 Features & Implementations
 
-Part 1: Turing Machine & Busy Beaver
+### Part 1: Turing Machine & Busy Beaver
 
   - Universal Simulator: A fully functional Turing Machine simulator implemented
     in Python using generators for memory-efficient, step-by-step execution.
@@ -85,7 +84,7 @@ Part 1: Turing Machine & Busy Beaver
     and 6-state Busy Beaver machines. Includes analysis of undecidability and
     maximum 1s generated before halting.
 
-Part 2: Cellular Automata
+### Part 2: Cellular Automata
 
   - Conway's Game of Life (GoL):
       - Core implementation with both finite and toroidal (wrapping) boundary
@@ -106,7 +105,7 @@ Part 2: Cellular Automata
   - Visualization: Interactive graphical interfaces built with Pygame to observe
     the automata in real-time.
 
-⚙️ Prerequisites & Installation
+## ⚙️ Prerequisites & Installation
 
 To run the simulations and visualizations, you need Python 3.x installed along
 with a few external libraries.
@@ -114,21 +113,21 @@ with a few external libraries.
 1.  Clone the repository:
 
 ```bash
-    git clone https://github.com/your-username/Theory-of-Languages-and-Automata-Project.git
-    cd Theory-of-Languages-and-Automata-Project
+git clone https://github.com/your-username/Theory-of-Languages-and-Automata-Project.git
+cd Theory-of-Languages-and-Automata-Project
 ```
 
 2.  Install the required dependencies:
 
 ```bash
-    pip install numpy scipy pygame
+pip install numpy scipy pygame
 ```
-    (Note: numpy and scipy are used for fast 2D convolutions in the Game of
-    Life, and pygame is used for the GUI).
+(Note: numpy and scipy are used for fast 2D convolutions in the Game of
+Life, and pygame is used for the GUI).
 
 ## 💻 How to Run
 
-# Running Tests
+### Running Tests
 
 Both directories contain automated test files to verify the logic. You can run
 them directly via the terminal:
@@ -150,11 +149,11 @@ python test_gameoflife_glider.py
 python test_gates.py
 ```
 
-### Running Visualizations (Part 2)
+## Running Visualizations (Part 2)
 
 To see the Cellular Automata in action, run the Pygame scripts:
 
-# Conway's Game of Life:
+### Conway's Game of Life:
 
 ```bash
 python pygame_gol.py
@@ -168,15 +167,15 @@ Langton's Ant:
 python langton_pygame.py
 ```
 
-# 📄 Documentation
+### 📄 Documentation
 
 For detailed mathematical explanations, state transition tables, and algorithmic
 analyses, please refer to the .pdf files located in their respective directories
 (e.g., document_busy_beaver.pdf, glider.pdf).
 
-Course: Theory of Languages and Automata
-Term: 4042
-University: Iran University of Science and Technology (IUST)
+  - Course: Theory of Languages and Automata
+  - Term: 4042
+  - University: Iran University of Science and Technology (IUST)
 
-# 👥Development team
+## 👥Development team
 This project was developed by the Safavie team, which consists of two collaborators: Amirreza Moghimi([Amir-sy8](https://github.com/amir-sy8)) and Erfan Moradi([Erfan-Lab](https://github.com/Erfan-Lab)).
