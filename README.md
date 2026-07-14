@@ -11,33 +11,64 @@ decidability, and emergence through mathematical models and simulations.
 
 📁 Project Structure
 
-The repository is structured as follows, mirroring the two main phases of the
-project:
+# Theory of Languages and Automata Project
 
+This repository contains the practical assignments for the **Theory of Languages and Automata** course. The project explores fundamental concepts of computation, decidability, and emergence through mathematical models and simulations.
+
+The project is divided into two main parts:
+1. **Turing Machines & The Busy Beaver Problem**
+2. **Cellular Automata (Conway's Game of Life & Langton's Ant)**
+
+---
+
+## 📁 Project Structure
+
+The repository is structured based on the two main phases of the project. Below is the file tree:
+
+```text
 Theory-of-Languages-and-Automata-Project/
 │
 ├── Part 1 - Busy Beaver/
-│   ├── busy_beaver.py                 # Core Busy Beaver implementations
-│   ├── busy_beaver_custom.py          # Custom N-state Busy Beaver designs
-│   ├── turing_machine.py              # Main Turing Machine simulator (Generator-based)
-│   ├── test_*.py                      # Various unit tests (Adder, Multiplier, etc.)
-│   ├── student_test_turing.py         # Self-assessment test suite
-│   ├── *.pdf                          # Mathematical proofs and documentation (Turing, BB)
-│   └── README.md                      # Specific details for Part 1
+│   ├── busy_beaver.py
+│   ├── busy_beaver_custom.py
+│   ├── doc.pdf
+│   ├── document_busy_beaver.pdf
+│   ├── document_turing.pdf
+│   ├── doument_custom_busy_beaver.pdf
+│   ├── student_test_turing.py
+│   ├── test_busy_beaver_2.py
+│   ├── test_turing_adder.py
+│   ├── test_turing_machine_example1.py
+│   ├── test_turing_machine_example2.py
+│   ├── test_turing_multiplier.py
+│   ├── turing_machine.py
+│   └── README.md
 │
 ├── Part 2 - GoL & Langton's Ant/
-│   ├── conway.py                      # Conway's Game of Life core logic (with SciPy convolution)
-│   ├── langton.py                     # Langton's Ant core logic (Standard & Multi-color)
-│   ├── logic_gates.py                 # Turing completeness proofs (AND/NOT gates via gliders)
-│   ├── pygame_*.py                    # Pygame visualizers for GoL and Ant
-│   ├── test_*.py                      # Unit tests for GoL, Gliders, and Logic Gates
-│   ├── *.cells / *.rle                # Pattern files (Glider guns, spaceships, oscillators)
-│   ├── doc.pdf                        # Project instructions and documentation
-│   └── README.md                      # Specific details for Part 2
+│   ├── 3enginecordership gun 279x258.cells
+│   ├── 7enginecordership spaceship.cells
+│   ├── ak94 gun.cells
+│   ├── dragon spaceship.cells
+│   ├── stargate oscillator.cells
+│   ├── vacuumgun gun.cells
+│   ├── vacuumgun gun.rle
+│   ├── conway.py
+│   ├── doc.pdf
+│   ├── langton.py
+│   ├── langton_pygame.py
+│   ├── logic_gates.py
+│   ├── pygame_gol.py
+│   ├── pygame_viewer.py
+│   ├── test_gameoflife_glider.py
+│   ├── test_gameoflife_glider_large.py
+│   ├── test_gameoflife_glider_simple.py
+│   ├── test_gates.py
+│   └── README.md
 │
-├── glider.pdf                         # Documentation on Glider collisions and signal processing
-├── .gitignore                         
-└── README.md                          # This file
+├── .gitignore
+├── glider.pdf
+└── README.md
+```
 
 🚀 Features & Implementations
 
@@ -148,4 +179,4 @@ Term: 4042
 University: Iran University of Science and Technology (IUST)
 
 # 👥Development team
-This project was developed by the Safavie team, which consists of two collaborators: Amirreza Moghimi([Amir-sy8](https://github.com/amir-sy8)) and Erfan Moradi([Erfan-Lab]https://github.com/Erfan-Lab).
+This project was developed by the Safavie team, which consists of two collaborators: Amirreza Moghimi([Amir-sy8](https://github.com/amir-sy8)) and Erfan Moradi([Erfan-Lab](https://github.com/Erfan-Lab)).
